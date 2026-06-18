@@ -1,0 +1,11 @@
+.plasma-app {
+	position: relative;
+	width: 100vw;
+	height: 100svh;
+	overflow: hidden;
+	background: #000000;
+}
+
+.plasma-app canvas {
+	display: block;
+}

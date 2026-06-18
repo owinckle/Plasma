@@ -183,6 +183,21 @@
 	border-color: rgba(160, 190, 255, 0.45);
 }
 
+.concept-explorer__credit {
+	position: absolute;
+	bottom: 1rem;
+	left: 50%;
+	transform: translateX(-50%);
+	margin: 0;
+	padding: 0 1rem;
+	max-width: calc(100% - 2rem);
+	font-size: 0.68rem;
+	letter-spacing: 0.04em;
+	text-align: center;
+	color: rgba(143, 163, 200, 0.55);
+	pointer-events: none;
+}
+
 @media (max-width: 768px) {
 	.concept-explorer {
 		flex-direction: column;

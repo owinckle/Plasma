@@ -78,6 +78,10 @@ export default function ConceptExplorer() {
 					)}
 				</article>
 			)}
+
+			<p className="concept-explorer__credit">
+				Projet hackathon — Defend Intelligence &amp; OpenAI · par Ocean Winckler
+			</p>
 		</div>
 	)
 }

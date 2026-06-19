@@ -5,6 +5,7 @@ import { useConcept } from "./ConceptContext.jsx"
 import ConceptTarget from "./ConceptTarget.jsx"
 import { SCENE_HOTSPOTS } from "./sceneHotspots.js"
 import { getSharedTendrils, sampleTendrilPoint } from "../plasma/globeUtils.js"
+import { useViewport } from "./useViewport.js"
 
 function ConceptHotspot({
 	id,
@@ -16,6 +17,7 @@ function ConceptHotspot({
 	onRootRef,
 	haloRef,
 	ringRef,
+	touchPickScale,
 }) {
 	const orientRef = useRef()
 	const { selectedId, hoveredId } = useConcept()
@@ -81,7 +83,7 @@ function ConceptHotspot({
 
 			<ConceptTarget conceptId={id}>
 				<mesh renderOrder={22}>
-					<sphereGeometry args={[pickRadius, 8, 8]} />
+					<sphereGeometry args={[pickRadius * touchPickScale, 8, 8]} />
 					<meshBasicMaterial transparent opacity={0} depthWrite={false} />
 				</mesh>
 			</ConceptTarget>
@@ -98,7 +100,9 @@ export default function ConceptHotspots() {
 		})),
 	)
 	const { selectedId, hoveredId } = useConcept()
+	const { isCoarse } = useViewport()
 	const tendrils = useMemo(() => getSharedTendrils(), [])
+	const touchPickScale = isCoarse ? 1.35 : 1
 
 	useFrame(({ clock }) => {
 		const t = clock.elapsedTime
@@ -137,6 +141,7 @@ export default function ConceptHotspots() {
 				<ConceptHotspot
 					key={hotspot.id}
 					{...hotspot}
+					touchPickScale={touchPickScale}
 					onRootRef={(el) => {
 						refs.current[i].root = el
 					}}

@@ -1,26 +1,32 @@
 import { getAllConcepts, getRelatedConcepts } from "../knowledge/index.js"
 import { useConcept } from "./ConceptContext.jsx"
 import { SCENE_HOTSPOT_IDS } from "./sceneHotspots.js"
+import { useViewport } from "./useViewport.js"
 
 export default function ConceptExplorer() {
-	const { selectedId, selectConcept, selected, setHoveredId } = useConcept()
+	const { selectedId, selectConcept, selected, setHoveredId, enterFreeView } = useConcept()
+	const { isMobile, isCoarse } = useViewport()
 	const allConcepts = getAllConcepts()
 	const related = selected ? getRelatedConcepts(selectedId) : []
 
+	const hint = selected
+		? isCoarse
+			? "Faites glisser ou pincez pour repasser en vue libre."
+			: "Faites glisser ou zoomez pour repasser en vue libre."
+		: isCoarse
+			? "Touchez les marqueurs lumineux ou choisissez un concept ci-dessous."
+			: "Cliquez sur les marqueurs lumineux dans la scène ou choisissez un concept ci-dessous."
+
 	return (
-		<div className="concept-explorer">
+		<div className={`concept-explorer${selected ? " concept-explorer--detail-open" : ""}`}>
 			<aside className="concept-explorer__nav" aria-label="Liste des concepts">
 				<header className="concept-explorer__header">
 					<p className="concept-explorer__eyebrow">Le Plasma</p>
 					<h1 className="concept-explorer__title">Explorer</h1>
-					<p className="concept-explorer__hint">
-						{selected
-							? "Faites glisser ou zoomez pour repasser en vue libre."
-							: "Cliquez sur les marqueurs lumineux dans la scène ou choisissez un concept ci-dessous."}
-					</p>
+					<p className="concept-explorer__hint">{hint}</p>
 				</header>
 
-				<ul className="concept-list">
+				<ul className="concept-list" role="list">
 					{allConcepts.map((concept) => (
 						<li key={concept.id}>
 							<button
@@ -31,6 +37,7 @@ export default function ConceptExplorer() {
 									if (SCENE_HOTSPOT_IDS.has(concept.id)) setHoveredId(concept.id)
 								}}
 								onMouseLeave={() => setHoveredId(null)}
+								aria-current={selectedId === concept.id ? "true" : undefined}
 							>
 								{concept.title}
 							</button>
@@ -40,9 +47,25 @@ export default function ConceptExplorer() {
 			</aside>
 
 			{selected && (
-				<article className="concept-panel" aria-live="polite">
+				<article
+					className="concept-panel"
+					aria-live="polite"
+					aria-label={`Détail : ${selected.title}`}
+				>
 					<header className="concept-panel__header">
-						<h2 className="concept-panel__title">{selected.title}</h2>
+						<div className="concept-panel__header-row">
+							<h2 className="concept-panel__title">{selected.title}</h2>
+							{isMobile && (
+								<button
+									type="button"
+									className="concept-panel__close"
+									onClick={enterFreeView}
+									aria-label="Fermer le détail"
+								>
+									<span aria-hidden="true">×</span>
+								</button>
+							)}
+						</div>
 						{selected.summary && <p className="concept-panel__summary">{selected.summary}</p>}
 					</header>
 

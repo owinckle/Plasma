@@ -1,12 +1,26 @@
 .concept-explorer {
+	--ui-pad: clamp(0.75rem, 2vw, 1rem);
+	--ui-pad-safe-top: max(var(--ui-pad), env(safe-area-inset-top, 0px));
+	--ui-pad-safe-right: max(var(--ui-pad), env(safe-area-inset-right, 0px));
+	--ui-pad-safe-bottom: max(var(--ui-pad), env(safe-area-inset-bottom, 0px));
+	--ui-pad-safe-left: max(var(--ui-pad), env(safe-area-inset-left, 0px));
+	--ui-radius: clamp(0.85rem, 2vw, 1rem);
+	--ui-nav-width: min(17rem, 34vw);
+	--ui-panel-width: min(22rem, 42vw);
+	--ui-touch-min: 2.75rem;
+
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
 	display: flex;
 	justify-content: space-between;
 	align-items: stretch;
-	padding: 1rem;
-	gap: 1rem;
+	padding:
+		var(--ui-pad-safe-top)
+		var(--ui-pad-safe-right)
+		var(--ui-pad-safe-bottom)
+		var(--ui-pad-safe-left);
+	gap: clamp(0.65rem, 1.5vw, 1rem);
 	z-index: 2;
 }
 
@@ -16,14 +30,16 @@
 }
 
 .concept-explorer__nav {
-	width: min(17rem, 34vw);
-	max-height: calc(100svh - 2rem);
+	width: var(--ui-nav-width);
+	max-height: calc(100dvh - var(--ui-pad-safe-top) - var(--ui-pad-safe-bottom));
 	overflow: auto;
 	padding: 1.1rem 1rem;
-	border-radius: 1rem;
+	border-radius: var(--ui-radius);
 	background: rgba(8, 10, 18, 0.78);
 	border: 1px solid rgba(140, 160, 210, 0.14);
 	backdrop-filter: blur(12px);
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
 }
 
 .concept-explorer__header {
@@ -40,14 +56,14 @@
 
 .concept-explorer__title {
 	margin: 0;
-	font-size: 1.35rem;
+	font-size: clamp(1.15rem, 2.4vw, 1.35rem);
 	font-weight: 600;
 	color: #f4f2ff;
 }
 
 .concept-explorer__hint {
 	margin: 0.55rem 0 0;
-	font-size: 0.82rem;
+	font-size: clamp(0.78rem, 1.6vw, 0.82rem);
 	line-height: 1.45;
 	color: #9aa8c4;
 }
@@ -63,6 +79,7 @@
 
 .concept-list__item {
 	width: 100%;
+	min-height: var(--ui-touch-min);
 	text-align: left;
 	padding: 0.55rem 0.7rem;
 	border-radius: 0.55rem;
@@ -71,6 +88,8 @@
 	color: #d5dcf0;
 	cursor: pointer;
 	transition: background 0.15s, border-color 0.15s, color 0.15s;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
 }
 
 .concept-list__item:hover {
@@ -86,26 +105,56 @@
 
 .concept-panel {
 	align-self: flex-end;
-	width: min(22rem, 42vw);
-	max-height: calc(100svh - 2rem);
+	width: var(--ui-panel-width);
+	max-height: calc(100dvh - var(--ui-pad-safe-top) - var(--ui-pad-safe-bottom));
 	overflow: auto;
 	padding: 1.15rem 1.1rem;
-	border-radius: 1rem;
+	border-radius: var(--ui-radius);
 	background: rgba(8, 10, 18, 0.82);
 	border: 1px solid rgba(140, 160, 210, 0.16);
 	backdrop-filter: blur(12px);
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
+}
+
+.concept-panel__header-row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.75rem;
+}
+
+.concept-panel__close {
+	flex-shrink: 0;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	width: var(--ui-touch-min);
+	height: var(--ui-touch-min);
+	margin: -0.35rem -0.35rem 0 0;
+	padding: 0;
+	border: 1px solid rgba(140, 160, 210, 0.22);
+	border-radius: 999px;
+	background: rgba(20, 26, 40, 0.9);
+	color: #dce4f8;
+	font-size: 1.35rem;
+	line-height: 1;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
 }
 
 .concept-panel__title {
 	margin: 0;
-	font-size: 1.25rem;
+	flex: 1;
+	font-size: clamp(1.1rem, 2.2vw, 1.25rem);
 	font-weight: 600;
 	color: #f8f5ff;
 }
 
 .concept-panel__summary {
 	margin: 0.55rem 0 0;
-	font-size: 0.88rem;
+	font-size: clamp(0.84rem, 1.8vw, 0.88rem);
 	line-height: 1.5;
 	color: #b4bdd6;
 }
@@ -119,7 +168,7 @@
 
 .concept-panel__body p {
 	margin: 0;
-	font-size: 0.92rem;
+	font-size: clamp(0.88rem, 1.9vw, 0.92rem);
 	line-height: 1.55;
 	color: #c8d0e4;
 }
@@ -142,7 +191,7 @@
 
 .concept-panel__fun-fact p:last-child {
 	margin: 0;
-	font-size: 0.88rem;
+	font-size: clamp(0.84rem, 1.8vw, 0.88rem);
 	line-height: 1.5;
 	color: #d8c8e8;
 }
@@ -168,7 +217,8 @@
 }
 
 .concept-chip {
-	padding: 0.35rem 0.65rem;
+	min-height: 2.25rem;
+	padding: 0.45rem 0.75rem;
 	border-radius: 999px;
 	border: 1px solid rgba(120, 150, 220, 0.28);
 	background: rgba(60, 80, 130, 0.2);
@@ -176,6 +226,8 @@
 	font-size: 0.8rem;
 	cursor: pointer;
 	transition: background 0.15s, border-color 0.15s;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
 }
 
 .concept-chip:hover {
@@ -185,32 +237,203 @@
 
 .concept-explorer__credit {
 	position: absolute;
-	bottom: 1rem;
+	bottom: calc(var(--ui-pad-safe-bottom) + 0.15rem);
 	left: 50%;
 	transform: translateX(-50%);
 	margin: 0;
 	padding: 0 1rem;
-	max-width: calc(100% - 2rem);
-	font-size: 0.68rem;
+	max-width: min(36rem, calc(100% - 2rem));
+	font-size: clamp(0.62rem, 1.4vw, 0.68rem);
 	letter-spacing: 0.04em;
+	line-height: 1.4;
 	text-align: center;
+	text-wrap: balance;
 	color: rgba(143, 163, 200, 0.55);
 	pointer-events: none;
+	transition: opacity 0.2s, transform 0.25s;
 }
 
-@media (max-width: 768px) {
+/* Tablet */
+@media (max-width: 1024px) {
 	.concept-explorer {
-		flex-direction: column;
-		justify-content: flex-start;
+		--ui-nav-width: min(15rem, 38vw);
+		--ui-panel-width: min(20rem, 46vw);
 	}
 
 	.concept-explorer__nav,
 	.concept-panel {
+		padding: 1rem 0.9rem;
+	}
+}
+
+/* Mobile portrait & narrow */
+@media (max-width: 768px) {
+	.concept-explorer {
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+		gap: 0.65rem;
+	}
+
+	.concept-explorer__nav {
 		width: 100%;
-		max-height: 38svh;
+		max-height: none;
+		flex-shrink: 0;
+		padding: 0.85rem 0.9rem 0.9rem;
+	}
+
+	.concept-explorer__header {
+		margin-bottom: 0.75rem;
+	}
+
+	.concept-explorer__hint {
+		margin-top: 0.4rem;
+	}
+
+	.concept-list {
+		flex-direction: row;
+		flex-wrap: nowrap;
+		gap: 0.45rem;
+		margin: 0 -0.15rem;
+		padding: 0.15rem 0.15rem 0.05rem;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x proximity;
+		scrollbar-width: none;
+	}
+
+	.concept-list::-webkit-scrollbar {
+		display: none;
+	}
+
+	.concept-list__item {
+		width: auto;
+		flex: 0 0 auto;
+		white-space: nowrap;
+		scroll-snap-align: start;
+		padding: 0.55rem 0.85rem;
 	}
 
 	.concept-panel {
-		align-self: stretch;
+		position: fixed;
+		left: var(--ui-pad-safe-left);
+		right: var(--ui-pad-safe-right);
+		bottom: var(--ui-pad-safe-bottom);
+		width: auto;
+		max-height: min(52dvh, 28rem);
+		align-self: auto;
+		padding: 0.95rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+		border-radius: 1rem 1rem var(--ui-radius) var(--ui-radius);
+		box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.45);
+	}
+
+	.concept-panel__close {
+		display: inline-flex;
+	}
+
+	.concept-explorer--detail-open .concept-explorer__credit {
+		opacity: 0;
+		transform: translateX(-50%) translateY(0.35rem);
+	}
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+	.concept-explorer {
+		--ui-pad: 0.65rem;
+	}
+
+	.concept-explorer__title {
+		font-size: 1.1rem;
+	}
+
+	.concept-explorer__hint {
+		font-size: 0.76rem;
+		line-height: 1.4;
+	}
+
+	.concept-panel {
+		max-height: min(58dvh, 24rem);
+	}
+
+	.concept-explorer__credit {
+		font-size: 0.58rem;
+		padding: 0 0.5rem;
+	}
+}
+
+/* Mobile landscape — side panels to preserve globe height */
+@media (max-width: 900px) and (max-height: 520px) and (orientation: landscape) {
+	.concept-explorer {
+		flex-direction: row;
+		align-items: stretch;
+		justify-content: space-between;
+	}
+
+	.concept-explorer__nav {
+		width: min(13.5rem, 36vw);
+		max-height: calc(100dvh - var(--ui-pad-safe-top) - var(--ui-pad-safe-bottom));
+	}
+
+	.concept-explorer__header {
+		margin-bottom: 0.55rem;
+	}
+
+	.concept-explorer__hint {
+		display: none;
+	}
+
+	.concept-list {
+		flex-direction: column;
+		overflow-x: hidden;
+		overflow-y: auto;
+		max-height: calc(100dvh - 7.5rem);
+	}
+
+	.concept-list__item {
+		width: 100%;
+		white-space: normal;
+	}
+
+	.concept-panel {
+		position: static;
+		width: min(17rem, 42vw);
+		max-height: calc(100dvh - var(--ui-pad-safe-top) - var(--ui-pad-safe-bottom));
+		box-shadow: none;
+		border-radius: var(--ui-radius);
+		padding: 0.85rem 0.9rem;
+	}
+
+	.concept-panel__close {
+		display: inline-flex;
+	}
+
+	.concept-explorer--detail-open .concept-explorer__credit {
+		opacity: 1;
+		transform: translateX(-50%);
+		bottom: calc(var(--ui-pad-safe-bottom) + 0.15rem);
+	}
+}
+
+/* Very short viewports */
+@media (max-height: 420px) {
+	.concept-explorer__eyebrow {
+		display: none;
+	}
+
+	.concept-explorer__title {
+		font-size: 1rem;
+	}
+
+	.concept-explorer__hint {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.concept-list__item,
+	.concept-chip,
+	.concept-explorer__credit {
+		transition: none;
 	}
 }

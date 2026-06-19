@@ -16,13 +16,22 @@ body,
 	margin: 0;
 	min-width: 320px;
 	min-height: 100%;
+	height: 100%;
 }
 
 body {
+	min-height: 100dvh;
 	min-height: 100svh;
 	background: #000000;
 	overflow: hidden;
 	color: #f0eef8;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+#root {
+	min-height: 100dvh;
+	min-height: 100svh;
 }
 
 button {
